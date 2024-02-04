@@ -1,8 +1,21 @@
 Rails.application.routes.draw do
+  resources :users do
+    resources :roles
+    resources :rsvps
+  end
+
+  resources :events do
+    resources :roles
+    resources :rsvps
+  end
+
+  resources :roles do
+    resources :rsvps
+  end
+
   resources :rsvps
-  resources :roles
-  resources :events
-  resources :users
+end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
