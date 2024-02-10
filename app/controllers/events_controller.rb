@@ -12,14 +12,16 @@ class EventsController < ApplicationController
     end
 
     def create
-      @event = current_user.events.create(event_params)
-  
-      if @event.persisted?
-        render json: @event, status: :created
-      else
-        render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
+        @event = current_user.events.build(event_params)
+        @event.organizer_id = current_user.id
+      
+        if @event.save
+          render json: @event, status: :created
+        else
+          render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
+        end
       end
-    end
+      
 
     def update
       if @event.update(event_params)

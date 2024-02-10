@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+    has_secure_password
     has_many :roles
     has_many :events, through: :roles
     has_many :rsvps
