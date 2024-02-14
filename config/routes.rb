@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  resources :users do
-    resources :roles
-    resources :rsvps
-  end
+  # resources :users do
+  #   resources :roles
+  #   resources :rsvps
+  # end
+  resources :users 
 
   resources :events do
     resources :roles

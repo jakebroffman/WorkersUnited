@@ -13,7 +13,7 @@ event1 = Event.create(
   duration: 2,
   description: 'Monthly meeting to discuss union matters.',
   organizer: user1,
-  attendee: user2
+  attendees: [user2]
 )
 
 event2 = Event.create(
@@ -24,7 +24,7 @@ event2 = Event.create(
   duration: 2,
   description: 'Educational workshop on labor rights and workplace regulations.',
   organizer: user2,
-  attendee: user1
+  attendees: [user1]
 )
 
 event3 = Event.create(
@@ -35,7 +35,7 @@ event3 = Event.create(
   duration: 3,
   description: 'Community rally to raise awareness for labor rights.',
   organizer: user1,
-  attendee: user2
+  attendees: [user2]
 )
 
 event4 = Event.create(
@@ -46,7 +46,7 @@ event4 = Event.create(
   duration: 4,
   description: 'Event to foster solidarity among workers from different industries.',
   organizer: user2,
-  attendee: user1
+  attendees: [user1]
 )
 
 event5 = Event.create(
@@ -54,23 +54,58 @@ event5 = Event.create(
   date: Date.tomorrow + 4,
   location: 'Union Hall Chicago',
   start_time: Time.now + 1.day + 3.hours,
-  duration: 2,
+  duration: 2, 
   description: 'Panel discussion on current labor challenges and solutions.',
   organizer: user1,
-  attendee: user2
+  attendees: [user2]
 )
 
-role1 = Role.create(title: 'Meeting Coordinator', responsibilities: 'Coordinate and lead the union meeting.', paid: false, user: user1, event: event1)
-role2 = Role.create(title: 'Workshop Facilitator', responsibilities: 'Facilitate discussions and activities during the workshop.', paid: true, user: user2, event: event2)
-role3 = Role.create(title: 'Rally Coordinator', responsibilities: 'Coordinate logistics for the labor rally.', paid: false, user: user1, event: event3)
-role4 = Role.create(title: 'Event Organizer', responsibilities: 'Organize and manage the worker solidarity event.', paid: true, user: user2, event: event4)
-role5 = Role.create(title: 'Panel Moderator', responsibilities: 'Moderate the panel discussion on labor challenges.', paid: false, user: user1, event: event5)
 
-rsvp1 = Rsvp.create(user: user2, event: event1, role: role1, comment: 'Excited to help organize the meeting!')
-rsvp2 = Rsvp.create(user: user1, event: event2, role: role2, comment: 'Looking forward to facilitating the workshop.')
-rsvp3 = Rsvp.create(user: user2, event: event3, role: role3, comment: 'Ready to support the rally!')
-rsvp4 = Rsvp.create(user: user1, event: event4, role: role4, comment: 'Excited to be part of organizing the event.')
-rsvp5 = Rsvp.create(user: user2, event: event5, role: role5, comment: 'Looking forward to moderating the panel.')
+role1 = Role.create(
+  title: 'Meeting Coordinator',
+  responsibilities: 'Coordinate and lead the union meeting.',
+  paid: false,
+  user: user1,
+  event_id: event1.id
+)
+
+role2 = Role.create(
+  title: 'Workshop Facilitator',
+  responsibilities: 'Facilitate discussions and activities during the workshop.',
+  paid: true,
+  user: user2,
+  event_id: event2.id
+)
+
+role3 = Role.create(
+  title: 'Rally Coordinator',
+  responsibilities: 'Coordinate logistics for the labor rally.',
+  paid: false,
+  user: user1,
+  event_id: event3.id
+)
+
+role4 = Role.create(
+  title: 'Event Organizer',
+  responsibilities: 'Organize and manage the worker solidarity event.',
+  paid: true,
+  user: user2,
+  event_id: event4.id
+)
+
+role5 = Role.create(
+  title: 'Panel Moderator',
+  responsibilities: 'Moderate the panel discussion on labor challenges.',
+  paid: false,
+  user: user1,
+  event_id: event5.id
+)
+
+rsvp1 = Rsvp.create(user: user2, event_id: event1.id, role: role1, comment: 'Excited to help organize the meeting!')
+rsvp2 = Rsvp.create(user: user1, event_id: event2.id, role: role2, comment: 'Looking forward to facilitating the workshop.')
+rsvp3 = Rsvp.create(user: user2, event_id: event3.id, role: role3, comment: 'Ready to support the rally!')
+rsvp4 = Rsvp.create(user: user1, event_id: event4.id, role: role4, comment: 'Excited to be part of organizing the event.')
+rsvp5 = Rsvp.create(user: user2, event_id: event5.id, role: role5, comment: 'Looking forward to moderating the panel.')
 
 
 

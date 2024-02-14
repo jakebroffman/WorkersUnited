@@ -1,41 +1,78 @@
-import React, { useRef } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@material-ui/core';
+import React, { useRef, useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const SignUp = ({ open, onClose }) => {
   const dialogRef = useRef();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    passwordConfirmation: '',
+    name: '',
+    local_chapter: '',
+    email: '',
+    city: '',
+    state: '',
+    profile_photo_url: '',
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
-    // Add your form submission logic here
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrorMessages(errorData.errors || ['Failed to create user']);
+        throw new Error('Failed to create user');
+      }
+
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+        setSnackbarOpen(false);
+
+        onClose();
+      }, 5000);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
     <Dialog open={open} onClose={onClose} ref={dialogRef}>
       <DialogTitle>Sign Up</DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSignUp}>
           <TextField
             fullWidth
-            label="Full Name"
-            name="name"
+            label="Username"
+            name="username"
             variant="outlined"
             margin="normal"
             required
-          />
-          <TextField
-            fullWidth
-            label="Email Address"
-            name="email"
-            type="email"
-            variant="outlined"
-            margin="normal"
-            required
+            onChange={handleChange}
           />
           <TextField
             fullWidth
@@ -45,8 +82,70 @@ const SignUp = ({ open, onClose }) => {
             variant="outlined"
             margin="normal"
             required
+            onChange={handleChange}
           />
-          {/* Add more form fields as needed */}
+          <TextField
+            fullWidth
+            label="Confirm Password"
+            name="passwordConfirmation"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            required
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Full Name"
+            name="name"
+            variant="outlined"
+            margin="normal"
+            required
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Local Chapter"
+            name="local_chapter"
+            variant="outlined"
+            margin="normal"
+            required
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Email Address"
+            name="email"
+            type="email"
+            variant="outlined"
+            margin="normal"
+            required
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="City"
+            name="city"
+            variant="outlined"
+            margin="normal"
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="State"
+            name="state"
+            variant="outlined"
+            margin="normal"
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            label="Profile Photo URL"
+            name="profile_photo_url"
+            variant="outlined"
+            margin="normal"
+            onChange={handleChange}
+          />
           <DialogActions>
             <Button type="submit" color="primary">
               Sign Up
@@ -57,6 +156,13 @@ const SignUp = ({ open, onClose }) => {
           </DialogActions>
         </form>
       </DialogContent>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleCloseSnackbar}>
+        <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
+          Sign up successful!
+        </MuiAlert>
+      </Snackbar>
+
     </Dialog>
   );
 };

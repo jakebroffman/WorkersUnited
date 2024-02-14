@@ -12,4 +12,3 @@ class Rsvp < ApplicationRecord
   validates :user_id, uniqueness: { scope: :event_id, message: "already RSVP'd to this event" }
 end
 
-end

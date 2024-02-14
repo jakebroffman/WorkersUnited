@@ -1,8 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :organizer, class_name: "User"
-  belongs_to :attending, class_name: "User"
   has_many :roles
-  has_many :users, through: :roles
+  has_many :rsvps
   has_many :attendees, through: :rsvps, source: :user
 
   validates :name, presence: true
@@ -24,4 +23,3 @@ class Event < ApplicationRecord
     errors.add(:start_time, "should be in the future") if start_time.present? && start_time < Time.now
   end
 end
-

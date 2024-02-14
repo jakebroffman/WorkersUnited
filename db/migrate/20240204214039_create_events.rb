@@ -8,7 +8,6 @@ class CreateEvents < ActiveRecord::Migration[7.1]
       t.integer :duration
       t.string :description
       t.references :organizer, foreign_key: { to_table: :users }
-      t.references :attendee, foreign_key: { to_table: :users }
 
       t.timestamps
     end
